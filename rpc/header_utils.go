@@ -10,6 +10,13 @@ import (
 	flatbuffers "github.com/google/flatbuffers/go"
 )
 
+// NewHeader - Constructs Header struct from bytes.
+func NewHeader(buf []byte) (hdr *Header) {
+	hdr = new(Header)
+	hdr.Init(buf, 0)
+	return
+}
+
 // ReadHeader - Reads smf RPC header from connection reader.
 func ReadHeader(conn io.Reader) (hdr *Header, err error) {
 	buf := make([]byte, 16)
@@ -17,7 +24,6 @@ func ReadHeader(conn io.Reader) (hdr *Header, err error) {
 	if err != nil {
 		return
 	}
-
 	hdr = new(Header)
 	hdr.Init(buf, 0)
 	return
