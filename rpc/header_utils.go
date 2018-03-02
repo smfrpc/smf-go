@@ -34,8 +34,8 @@ func ReadRequest(conn io.Reader) (hdr *Header, req []byte, err error) {
 	return
 }
 
-// BuildHeader - Builds response header from response bytes and request header.
-func BuildHeader(req *Header, resp []byte, status uint32) []byte {
+// BuildResponseHeader - Builds response header from response bytes and request header.
+func BuildResponseHeader(req *Header, resp []byte, status uint32) []byte {
 	builder := flatbuffers.NewBuilder(20) // [1]
 	res := CreateHeader(builder,
 		0,                                         // compression int8,

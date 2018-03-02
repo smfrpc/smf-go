@@ -45,7 +45,7 @@ func handleRequest(conn net.Conn) error {
 	// fmt.Printf("Name: %s\n", req.Name())
 
 	resp := buildResponse(req)
-	respHdr := rpc.BuildHeader(hdr, resp, 200)
+	respHdr := rpc.BuildResponseHeader(hdr, resp, 200)
 
 	// debug: print response header
 	rhdr := new(rpc.Header)
