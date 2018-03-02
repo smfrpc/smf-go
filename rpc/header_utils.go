@@ -36,14 +36,19 @@ func ReadRequest(conn io.Reader) (hdr *Header, req []byte, err error) {
 
 // BuildResponseHeader - Builds response header from response bytes and request header.
 func BuildResponseHeader(req *Header, resp []byte, status uint32) []byte {
+	return BuildHeader(req.Session(), resp, status)
+}
+
+// BuildHeader - Builds smf RPC request/response header.
+func BuildHeader(session uint16, body []byte, meta uint32) []byte {
 	builder := flatbuffers.NewBuilder(20) // [1]
 	res := CreateHeader(builder,
 		0,                                         // compression int8,
 		0,                                         // bitflags int8,
-		req.Session(),                             // session uint16,
-		uint32(len(resp)),                         // size uint32,
-		uint32(math.MaxUint32&xxhash.Sum64(resp)), // checksum uint32,
-		status, //	meta uint32
+		session,                                   // session uint16,
+		uint32(len(body)),                         // size uint32,
+		uint32(math.MaxUint32&xxhash.Sum64(body)), // checksum uint32,
+		meta, //	meta uint32
 	)
 	builder.Finish(res)
 	// TODO(crackcomm): builder prepends 4 bytes
