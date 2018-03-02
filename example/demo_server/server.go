@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io"
 	"log"
 	"net"
 
@@ -37,15 +36,8 @@ func handleConnection(conn net.Conn) {
 }
 
 func handleRequest(conn net.Conn) error {
-	hdr, err := rpc.ReadHeader(conn)
+	hdr, reqBuf, err := rpc.ReadRequest(conn)
 	if err != nil {
-		return err
-	}
-
-	log.Printf("Request: %s", hdr)
-
-	reqBuf := make([]byte, hdr.Size())
-	if _, err := io.ReadFull(conn, reqBuf); err != nil {
 		return err
 	}
 
