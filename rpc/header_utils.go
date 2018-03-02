@@ -23,6 +23,17 @@ func ReadHeader(conn io.Reader) (hdr *Header, err error) {
 	return
 }
 
+// ReadRequest - Reads request header and body.
+func ReadRequest(conn io.Reader) (hdr *Header, req []byte, err error) {
+	hdr, err = ReadHeader(conn)
+	if err != nil {
+		return
+	}
+	req = make([]byte, hdr.Size())
+	_, err = io.ReadFull(conn, req)
+	return
+}
+
 // BuildHeader - Builds response header from response bytes and request header.
 func BuildHeader(req *Header, resp []byte, status uint32) []byte {
 	builder := flatbuffers.NewBuilder(20) // [1]
