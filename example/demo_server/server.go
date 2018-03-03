@@ -1,14 +1,31 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
 
 	flatbuffers "github.com/google/flatbuffers/go"
 
 	"github.com/crackcomm/go-smf/example/demo"
+	"github.com/crackcomm/go-smf/example/demo_gen"
 	"github.com/crackcomm/go-smf/rpc"
 )
+
+type demoStorage struct {
+}
+
+func (s *demoStorage) Get(ctx context.Context, req *demo.Request) ([]byte, error) {
+	builder := flatbuffers.NewBuilder(0)
+	name := builder.CreateByteString(req.Name())
+	demo.ResponseStart(builder)
+	demo.ResponseAddName(builder, name)
+	resp := demo.ResponseEnd(builder)
+	builder.Finish(resp)
+	return builder.FinishedBytes(), nil
+}
+
+var storageService = demo_gen.NewStorageService(&demoStorage{})
 
 func main() {
 	ln, err := net.Listen("tcp", ":20766")
@@ -41,10 +58,16 @@ func handleRequest(conn net.Conn) error {
 		return err
 	}
 
-	req := demo.GetRootAsRequest(reqBuf, 0)
-	// fmt.Printf("Name: %s\n", req.Name())
+	handle := storageService.MethodHandle(hdr.Meta())
+	if handle == nil {
+		panic("TODO")
+	}
 
-	resp := buildResponse(req)
+	resp, err := handle(context.TODO(), reqBuf)
+	if err != nil {
+		panic(err)
+	}
+
 	respHdr := rpc.BuildResponseHeader(hdr, resp, 200)
 
 	// debug: print response header
@@ -61,14 +84,4 @@ func handleRequest(conn net.Conn) error {
 	}
 
 	return nil
-}
-
-func buildResponse(req *demo.Request) []byte {
-	builder := flatbuffers.NewBuilder(0)
-	name := builder.CreateByteString(req.Name())
-	demo.ResponseStart(builder)
-	demo.ResponseAddName(builder, name)
-	resp := demo.ResponseEnd(builder)
-	builder.Finish(resp)
-	return builder.FinishedBytes()
 }

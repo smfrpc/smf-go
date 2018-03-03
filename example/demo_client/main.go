@@ -13,7 +13,7 @@ import (
 var xreq = strings.Repeat("x", 1000)
 
 func main() {
-	conn, err := net.Dial("tcp", "172.17.0.1:20776")
+	conn, err := net.Dial("tcp", "172.17.0.1:20766")
 	if err != nil {
 		log.Fatal(err)
 	}
