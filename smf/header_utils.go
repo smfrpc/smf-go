@@ -1,4 +1,4 @@
-package rpc
+package smf
 
 import (
 	"fmt"
@@ -17,8 +17,8 @@ func NewHeader(buf []byte) (hdr *Header) {
 	return
 }
 
-// ReadHeader - Reads smf RPC header from connection reader.
-func ReadHeader(conn io.Reader) (hdr *Header, err error) {
+// ReceiveHeader - Reads smf RPC header from connection reader.
+func ReceiveHeader(conn io.Reader) (hdr *Header, err error) {
 	buf := make([]byte, 16)
 	_, err = io.ReadFull(conn, buf)
 	if err != nil {
@@ -29,9 +29,9 @@ func ReadHeader(conn io.Reader) (hdr *Header, err error) {
 	return
 }
 
-// ReadRequest - Reads request header and body.
-func ReadRequest(conn io.Reader) (hdr *Header, req []byte, err error) {
-	hdr, err = ReadHeader(conn)
+// ReceivePayload - Reads request header and body.
+func ReceivePayload(conn io.Reader) (hdr *Header, req []byte, err error) {
+	hdr, err = ReceiveHeader(conn)
 	if err != nil {
 		return
 	}
@@ -40,9 +40,16 @@ func ReadRequest(conn io.Reader) (hdr *Header, req []byte, err error) {
 	return
 }
 
-// BuildResponseHeader - Builds response header from response bytes and request header.
-func BuildResponseHeader(req *Header, resp []byte, status uint32) []byte {
-	return BuildHeader(req.Session(), resp, status)
+// WritePayload - Writes payload to io.Writer with header.
+func WritePayload(w io.Writer, session uint16, body []byte, meta uint32) (err error) {
+	head := BuildHeader(session, body, meta)
+	if _, err := w.Write(head); err != nil {
+		return err
+	}
+	if _, err := w.Write(body); err != nil {
+		return err
+	}
+	return nil
 }
 
 // BuildHeader - Builds smf RPC request/response header.

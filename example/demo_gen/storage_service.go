@@ -4,38 +4,38 @@ import (
 	"context"
 
 	"github.com/crackcomm/go-smf/example/demo"
-	"github.com/crackcomm/go-smf/rpc"
+	"github.com/crackcomm/go-smf/smf"
 )
 
-// Storage - Storage service interface.
-type Storage interface {
+// SmfStorage - SmfStorage service interface.
+type SmfStorage interface {
 	// Get - method description.
 	Get(context.Context, *demo.Request) ([]byte, error)
 }
 
-// StorageService - Storage service implementation.
-type StorageService struct {
-	Storage
+// SmfStorageService - SmfStorage service implementation.
+type SmfStorageService struct {
+	SmfStorage
 }
 
-// NewStorageService - Creates a new Storage service.
-func NewStorageService(s Storage) *StorageService {
-	return &StorageService{Storage: s}
+// NewSmfStorageService - Creates a new SmfStorage service.
+func NewSmfStorageService(s SmfStorage) *SmfStorageService {
+	return &SmfStorageService{SmfStorage: s}
 }
 
 // ServiceName - Returns smf service name.
-func (s *StorageService) ServiceName() string {
+func (s *SmfStorageService) ServiceName() string {
 	return "SmfStorage"
 }
 
 // ServiceID - Returns smf service ID.
-func (s *StorageService) ServiceID() uint32 {
+func (s *SmfStorageService) ServiceID() uint32 {
 	return 212494116
 }
 
 // MethodHandle - Returns method handle for request ID.
 // The handle is nil if the request ID is not recognized.
-func (s *StorageService) MethodHandle(id uint32) rpc.RawHandle {
+func (s *SmfStorageService) MethodHandle(id uint32) smf.RawHandle {
 	switch id {
 	case 212494116 ^ 1719559449:
 		return s.RawGet
@@ -45,6 +45,6 @@ func (s *StorageService) MethodHandle(id uint32) rpc.RawHandle {
 }
 
 // RawGet - Calls underlying storage interface by casting request to *demo.Request.
-func (s *StorageService) RawGet(ctx context.Context, req []byte) ([]byte, error) {
-	return s.Storage.Get(ctx, demo.GetRootAsRequest(req, 0))
+func (s *SmfStorageService) RawGet(ctx context.Context, req []byte) ([]byte, error) {
+	return s.SmfStorage.Get(ctx, demo.GetRootAsRequest(req, 0))
 }

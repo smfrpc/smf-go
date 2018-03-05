@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/crackcomm/go-smf/example/demo"
-	"github.com/crackcomm/go-smf/rpc"
+	"github.com/crackcomm/go-smf/smf"
 	flatbuffers "github.com/google/flatbuffers/go"
 )
 
@@ -26,15 +26,15 @@ func main() {
 
 func handleClient(conn net.Conn) (err error) {
 	req := buildRequest(xreq)
-	hdr := rpc.BuildHeader(1, req, 1792279101)
-	log.Printf("Request Header: %s", rpc.NewHeader(hdr))
+	hdr := smf.BuildHeader(1, req, 1792279101)
+	log.Printf("Request Header: %s", smf.NewHeader(hdr))
 	if _, err := conn.Write(hdr); err != nil {
 		return err
 	}
 	if _, err := conn.Write(req); err != nil {
 		return err
 	}
-	h, respBuf, err := rpc.ReadRequest(conn)
+	h, respBuf, err := smf.ReceivePayload(conn)
 	if err != nil {
 		return err
 	}

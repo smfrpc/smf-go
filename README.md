@@ -1,4 +1,4 @@
-# Golang [smf - the fastest RPC in the West](https://github.com/senior7515/smf/)
+# Go [smf - the fastest RPC in the West](https://github.com/senior7515/smf/)
 
 [![smf](https://img.shields.io/badge/project-smf-blue.svg?style=flat-square)](https://github.com/senior7515/smf)
 [![GoDoc](https://godoc.org/github.com/ipfn/go-ipfn?status.svg)](https://godoc.org/github.com/crackcomm/go-smf)

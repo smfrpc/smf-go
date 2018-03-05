@@ -7,7 +7,7 @@
 // Copyright 2017 Alexander Gallego
 //
 
-namespace rpc;
+namespace smf;
 
 /// \brief: headers that are stored in an int
 /// so they need to be inclusive. That is, you can turn on
