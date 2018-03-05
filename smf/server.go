@@ -1,6 +1,7 @@
 package smf
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"io"
@@ -32,6 +33,17 @@ func (server *Server) MethodHandle(id uint32) (handle RawHandle) {
 
 // HandleConnection - Handles accepted connection.
 func (server *Server) HandleConnection(conn net.Conn) error {
+	writer := bufio.NewWriter(conn)
+
+	defer func() {
+		if err := writer.Flush(); err != nil {
+			log.Printf("Connection flush error: %v", err)
+		}
+		if err := conn.Close(); err != nil {
+			log.Printf("Connection close error: %v", err)
+		}
+	}()
+
 	for {
 		header, req, err := ReceivePayload(conn)
 		if err != nil {
@@ -49,7 +61,12 @@ func (server *Server) HandleConnection(conn net.Conn) error {
 			return err
 		}
 
-		err = WritePayload(conn, header.Session(), resp, 200)
+		err = WritePayload(writer, header.Session(), resp, 200)
+		if err != nil {
+			return err
+		}
+
+		err = writer.Flush()
 		if err != nil {
 			return err
 		}
