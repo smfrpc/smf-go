@@ -4,10 +4,18 @@ import (
 	"context"
 
 	"github.com/crackcomm/go-smf/example/demo"
+	"github.com/crackcomm/go-smf/smf"
 )
 
 // SmfStorageClient - SmfStorage Client implementation.
-type SmfStorageClient struct{}
+type SmfStorageClient struct {
+	*smf.Client
+}
+
+// NewSmfStorageClient - Creates new SmfStorage client.
+func NewSmfStorageClient(client *smf.Client) *SmfStorageClient {
+	return &SmfStorageClient{Client: client}
+}
 
 // Get - method description.
 func (s *SmfStorageClient) Get(ctx context.Context, req []byte) (*demo.Response, error) {
@@ -20,9 +28,5 @@ func (s *SmfStorageClient) Get(ctx context.Context, req []byte) (*demo.Response,
 
 // RawGet - Raw method description.
 func (s *SmfStorageClient) RawGet(ctx context.Context, req []byte) ([]byte, error) {
-	return nil, nil
-	// Server would do following:
-	//   return s.SmfStorage.Get(ctx, demo.GetRootAsRequest(req, 0))
-	// Client does the opposite, Get -> RawGet
-	//   // TODO(crackcomm): here we are sending etc.
+	return s.Client.SendRecv(req, 212494116^1719559449)
 }
