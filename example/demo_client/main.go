@@ -25,14 +25,14 @@ func buildRequest() []byte {
 }
 
 func main() {
-	client, err := smf.Dial("tcp", "172.17.0.1:20766")
+	client, err := smf.Dial("tcp", "127.0.0.1:20766")
 	if err != nil {
 		log.Fatal(err)
 	}
-	store := demo_gen.NewSmfStorageClient(client)
+	defer client.Close()
 
-	req := buildRequest()
-	resp, err := store.Get(context.TODO(), req)
+	store := demo_gen.NewSmfStorageClient(client)
+	resp, err := store.Get(context.TODO(), buildRequest())
 	if err != nil {
 		log.Fatal(err)
 	}

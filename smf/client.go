@@ -16,7 +16,7 @@ type Client struct {
 func Dial(network, addr string) (client *Client, err error) {
 	conn, err := net.Dial(network, addr)
 	if err != nil {
-		return nil, err
+		return
 	}
 	return NewClient(conn), nil
 }
@@ -53,4 +53,9 @@ func (client *Client) Send(req []byte, meta uint32) (err error) {
 // Recv - Receives response with header.
 func (client *Client) Recv() (*Header, []byte, error) {
 	return ReceivePayload(client.conn)
+}
+
+// Close - Closes client connetion.
+func (client *Client) Close() error {
+	return client.conn.Close()
 }
