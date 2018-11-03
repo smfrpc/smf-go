@@ -1,18 +1,18 @@
-# Go [smf - the fastest RPC in the West](https://github.com/senior7515/smf/)
-
+# Go [smf - the fastest RPC in the West](https://github.com/smfrpc/smf/)
+[![Build Status](https://travis-ci.org/smfrpc/smf-go.svg?branch=master)](https://travis-ci.org/smfrpc/smf-go)
 [![smf](https://img.shields.io/badge/project-smf-blue.svg?style=flat-square)](https://github.com/senior7515/smf)
 [![GoDoc](https://godoc.org/github.com/ipfn/go-ipfn?status.svg)](https://godoc.org/github.com/crackcomm/go-smf)
 
 WIP
 
-Go implementation of [smf - the fastest RPC in the West](https://github.com/senior7515/smf/), not as fast as original; with little chance of being so.
+Go implementation of [smf - the fastest RPC in the West](https://github.com/smfrpc/smf/), not as fast as original; with little chance of being so.
 
 ![](./plot.png)
 
 ## References
 
-* [Main Repository](https://github.com/senior7515/smf) - smf source code
-* [Official Documentation](https://senior7515.github.io/smf/) - smf documentation
+* [Main Repository](https://github.com/smfrpc/smf) - smf source code
+* [Official Documentation](https://smfrpc.github.io/smf/) - smf documentation
 
 ## License
 
