@@ -64,3 +64,8 @@ main
 **/_vendor*
 
 *.gz
+pkg/
+bin/
+github.com/
+golang.org/
+google.golang.org/
