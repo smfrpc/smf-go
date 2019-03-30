@@ -7,9 +7,9 @@ import (
 
 	flatbuffers "github.com/google/flatbuffers/go"
 
-	"github.com/crackcomm/go-smf/example/demo"
-	"github.com/crackcomm/go-smf/example/demo_gen"
-	"github.com/crackcomm/go-smf/smf"
+	"github.com/smfrpc/smf-go/example/demo"
+	"github.com/smfrpc/smf-go/example/demo_gen"
+	"github.com/smfrpc/smf-go/src/smf"
 )
 
 var xreq = strings.Repeat("x", 1000)

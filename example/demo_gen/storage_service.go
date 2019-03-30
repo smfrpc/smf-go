@@ -3,8 +3,8 @@ package demo_gen
 import (
 	"context"
 
-	"github.com/crackcomm/go-smf/example/demo"
-	"github.com/crackcomm/go-smf/smf"
+	"github.com/smfrpc/smf-go/example/demo"
+	"github.com/smfrpc/smf-go/src/smf"
 )
 
 // SmfStorage - SmfStorage service interface.
